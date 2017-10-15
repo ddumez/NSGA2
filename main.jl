@@ -7,3 +7,17 @@ type individu{X,Y}
 end
 
 include("archive.jl")
+
+#generation pop initiale
+pop = []
+
+#boucle
+while
+    #selection des parents
+
+    #reproduction
+
+    #mutation
+
+    #selection
+end
