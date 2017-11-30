@@ -77,8 +77,6 @@ end
 
 function ajout(liste::listeND{X,Y}, ind::individu) where{X,Y}
     if liste.deb == nil{X,Y}()
-        println(ind)
-        println(liste.deb)
         liste.deb = CrerNoeud(ind)
     else
         nouv = CrerNoeud(ind)
