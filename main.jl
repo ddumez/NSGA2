@@ -30,4 +30,4 @@ println("pop : ",pop)
 println("l : ",l)
 println("F : ",F)
 println("indrang : ", indrang(F,pop))
-
+println("newpop : ",updatepop(F , pop, 2))

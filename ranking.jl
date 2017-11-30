@@ -55,21 +55,24 @@ function indrang(F::Array{Set{Int32},1}, pop::Array{individu{X,Y},1}) where {X,Y
     return rang
 end
 
-function updatepop(F::Array{Set{Int32},1}, pop::Array{individu{X,Y},1}, taillemax::Int32) where{X,Y}
+function updatepop(F::Array{Set{Int32},1}, pop::Array{individu{X,Y},1}, taillemax::Int64) where{X,Y}
     nbind = 0
     newpop = Array{individu{X,Y},1}()
     i = 1
 
-    for i in 1:size(F[i])[1]
+    for i in 1:size(F)[1]
         for ind in F[i]
             push!(newpop, pop[ind])
             nbind += 1
 
-            if nbind > taillemax
+            if nbind >= taillemax
                 break
             end
-
         end
+        if nbind >= taillemax
+            break
+        end
+
     end
 
     return newpop
@@ -98,3 +101,4 @@ function domineMax(a::individu{X,Y},b::individu{X,Y}) where {X,Y}
         i = i+1
     end
     return large && stricte
+end
