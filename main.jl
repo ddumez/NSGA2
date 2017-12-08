@@ -1,11 +1,11 @@
-#Constantes
+#parammetres
 taillePop = 350
 lBit = 22
-
 probaCrossover =  1.0
 probaMutation = 0.60
 nGeneration = 50
 
+#structures parametrique pour NSGA
 type individu{X,Y}
     x::X
     y::Array{Y}
@@ -14,6 +14,7 @@ type individu{X,Y}
     individu{X,Y}(ind::individu{X,Y}) where{X,Y} = new(copy(ind.x),copy(ind.y))
 end
 
+#structures et fonctions spécifique à notre problème (le demonstrateur de VEGA du cours)
 type pointReel
 	bx::Array{Bool}
 	x::Float
@@ -102,8 +103,11 @@ function NSGA2(taillePop::Int, probaCrossover::Float, probaMutation::Float, nGen
 	return taillePop
 end
 
+#calculs
 pop = Array{individu{pointReel,Float},1}()
 taillePop = NSGA2(taillePop, probaCrossover, probaMutation, nGeneration, pop, crossoverPoint, mutationPoint, schaffer, domineMin, generePoint)
+
+#traitement et affichage des résultats
 l = listeND{pointReel,Float}(domineMin, dominefaibleMin)
 for i = 1:taillePop
 	push!(l, pop[i])
