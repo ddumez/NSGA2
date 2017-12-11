@@ -1,6 +1,6 @@
 #parammetres
 taillePop = 350
-lBit = 22
+lBit = 16
 probaCrossover =  1.0
 probaMutation = 0.60
 nGeneration = 50
