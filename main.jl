@@ -14,6 +14,25 @@ type individu{X,Y}
     individu{X,Y}(ind::individu{X,Y}) where{X,Y} = new(copy(ind.x),copy(ind.y))
 end
 
+#petites fonctions utile pour le tri avant le crowding
+function corespondVect(pop::Array{individu{X,Y},1}) where {X,Y}
+	return function(ind::Int)
+		return pop[ind].y	
+	end
+end
+function lex(y1::Array{Y}, y2::Array{Y}) where {Y}
+	i = 1
+	while (i <= size(y1)[1]) && (y1[i] == y2[i])
+		i += 1
+	end
+	
+	if i > size(y1)[1]
+		return true
+	else
+		return y1[i] < y2[i]
+	end
+end
+
 #structures et fonctions spécifique à notre problème (le demonstrateur de VEGA du cours)
 type pointReel
 	bx::Array{Bool}
@@ -96,6 +115,10 @@ function NSGA2(taillePop::Int, probaCrossover::Float, probaMutation::Float, nGen
 		F = ranking(pop, domine)
 		taillePop = max(taillePop, size(F[1])[1]) #on agrandit la pop si besoin pour garder tous les points efficaces
 		updatepop(F, pop, taillePop)
+		
+		for i = 1:size(F)[1]
+			sort!(F[i], lt=lex, by=corespondVect(pop))
+		end
 
 	end
 
