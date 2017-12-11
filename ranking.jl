@@ -1,8 +1,8 @@
 function ranking( pop::Array{individu{X,Y},1}, domine) where {X,Y}
     S = Array{Set{Int},1}(size(pop)[1])
-    F = Array{Set{Int},1}()
-            push!(F,Set{Int}())
-    n = Array{Int32,1}(size(pop)[1])
+    F = Array{Array{Int,1},1}()
+            push!(F,Array{Int,1}())
+    n = Array{Int,1}(size(pop)[1])
 
     for i=1:size(pop)[1]
         n[i] = 0
@@ -23,12 +23,12 @@ function ranking( pop::Array{individu{X,Y},1}, domine) where {X,Y}
 
     i = 1
     while ! isempty(F[i])
-        push!(F,Set{Int}())
+        push!(F,Array{Int,1}())
 
         for ind in F[i]
             for parc in S[ind]
                 n[parc] -= 1
-            
+
                 if n[parc] == 0
                     push!(F[i+1],parc)
                 end
@@ -43,19 +43,19 @@ function ranking( pop::Array{individu{X,Y},1}, domine) where {X,Y}
     return F
 end
 
-function indrang(F::Array{Set{Int},1}, pop::Array{individu{X,Y},1}) where {X,Y}
-    rang = Dict{individu{X,Y},Int}()
+function indrang(F::Array{Array{Int,1},1})
+    rang = Dict{Int,Int}()
 
     for i in 1:size(F)[1]
         for ind in F[i]
-            push!(rang, pop[ind] => i)
+            push!(rang, ind => i)
         end
     end
 
     return rang
 end
 
-function updatepop(F::Array{Set{Int},1}, pop::Array{individu{X,Y},1}, taillemax::Int) where{X,Y}
+function updatepop(F::Array{Array{Int,1},1}, pop::Array{individu{X,Y},1}, taillemax::Int) where{X,Y}
     nbind = 0
     newpop = Array{individu{X,Y},1}()
     i = 1
