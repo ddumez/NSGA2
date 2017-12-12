@@ -1,7 +1,6 @@
 #parammetres
 taillePop = 350
 lBit = 22
-probaCrossover =  1.0
 probaMutation = 0.60
 nGeneration = 50
 
@@ -27,7 +26,7 @@ end
 
 function schaffer(p::pointReel)
 	calcVal(p)
-	return ( (p.x)^2 , (p.x -2)^2)
+	return [ (p.x)^2 , (p.x -2)^2]
 end
 
 #calcule la veleur du point pour le range [-5,5]
@@ -82,7 +81,18 @@ end
 include("archive.jl")
 include("ranking.jl")
 
-function NSGA2(taillePop::Int, probaCrossover::Float, probaMutation::Float, nGeneration::Int, pop::Array{individu{X,Y},1}, crossover, mutation, evaluation, domine, genere) where {X,Y}
+#= X est le type de la struture de donné qui contien une solution, sa valeur sera un tableau de Y dont la dimention est le nombre d'objectif
+taillePop est un entier qui donne la taille initiale de la population (elle sera garandit au besoin pour conserver les solution de rang 1)
+probaMutation est la probabilité d'effectuer une mutation
+nGeneration est le nombre d'iteration à effectuer
+pop est le tableau qui stoke la population
+crossover est la fonction de crossover, elle prend 2 individu de type X
+mutation est la fonction de mutation, elle modifie sur place un individu de type X
+evaluation retourne un array de Y contenant les valeur de la solution de type X passé en parametre
+domine est la fonction qui doit etre utilisée pour tester la dominance (domineMin ou domineMax)
+genere prend une solution de type X et l'initialise 
+=#
+function NSGA2(taillePop::Int, probaMutation::Float, nGeneration::Int, pop::Array{individu{X,Y},1}, crossover, mutation, evaluation, domine, genere) where {X,Y}
 	#generation de la population initiale
 	for i = 1:taillePop
 		push!(pop, pointReel(lBit))
@@ -102,6 +112,7 @@ function NSGA2(taillePop::Int, probaCrossover::Float, probaMutation::Float, nGen
 	#fin
 	return taillePop
 end
+
 
 #calculs
 pop = Array{individu{pointReel,Float},1}()
