@@ -1,8 +1,10 @@
+#fonction du calcul du rang
+# A Fast and Elitist Multiobjective Genetic Algorithm: NSGA-II Kalyanmoy Deb, Associate Member, IEEE, Amrit Pratap, Sameer Agarwal, and T. Meyarivan
 function ranking( pop::Array{individu{X,Y},1}, domine) where {X,Y}
     S = Array{Set{Int},1}(size(pop)[1])
-    F = Array{Set{Int},1}()
-            push!(F,Set{Int}())
-    n = Array{Int32,1}(size(pop)[1])
+    F = Array{Array{Int,1},1}()
+            push!(F,Array{Int,1}())
+    n = Array{Int,1}(size(pop)[1])
 
     for i=1:size(pop)[1]
         n[i] = 0
@@ -23,12 +25,12 @@ function ranking( pop::Array{individu{X,Y},1}, domine) where {X,Y}
 
     i = 1
     while ! isempty(F[i])
-        push!(F,Set{Int}())
+        push!(F,Array{Int,1}())
 
         for ind in F[i]
             for parc in S[ind]
                 n[parc] -= 1
-            
+
                 if n[parc] == 0
                     push!(F[i+1],parc)
                 end
@@ -43,19 +45,21 @@ function ranking( pop::Array{individu{X,Y},1}, domine) where {X,Y}
     return F
 end
 
-function indrang(F::Array{Set{Int},1}, pop::Array{individu{X,Y},1}) where {X,Y}
-    rang = Dict{individu{X,Y},Int}()
+#creer un dictionnaire qui associe à chaque individu son rang
+function indrang(F::Array{Array{Int,1},1})
+    rang = Dict{Int,Int}()
 
     for i in 1:size(F)[1]
         for ind in F[i]
-            push!(rang, pop[ind] => i)
+            push!(rang, ind => i)
         end
     end
 
     return rang
 end
 
-function updatepop(F::Array{Set{Int},1}, pop::Array{individu{X,Y},1}, taillemax::Int) where{X,Y}
+#met à jour la population enfonction d'une taille max et de leur rang
+function updatepop(F::Array{Array{Int,1},1}, pop::Array{individu{X,Y},1}, taillemax::Int) where{X,Y}
     nbind = 0
     newpop = Array{individu{X,Y},1}()
     i = 1
@@ -74,11 +78,11 @@ function updatepop(F::Array{Set{Int},1}, pop::Array{individu{X,Y},1}, taillemax:
         end
 
     end
-
     return newpop
 
 end
 
+#les deux fonctions générique de test de dominance
 function domineMin(a::individu{X,Y},b::individu{X,Y}) where {X,Y}
     large = true
     stricte = false
